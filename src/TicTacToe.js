@@ -58,7 +58,7 @@ const TicTacToe = () => {
         if (!winner && player === 'O') {
             makeComputerMove();
         }
-    }, [player, winner]);
+    }, );
 
     const checkWinner = (currentBoard) => {
         const winningLines = [
