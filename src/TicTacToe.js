@@ -9,10 +9,56 @@ const TicTacToe = () => {
     const [winner, setWinner] = useState(null);
 
     useEffect(() => {
+        function makeComputerMove (){
+            let bestMove = -1;
+
+            // Check for a winning move for 'O'
+            for (let i = 0; i < board.length; i++) {
+                if (board[i] === null) {
+                    const newBoard = [...board];
+                    newBoard[i] = 'O';
+                    if (checkWinner(newBoard) === 'O') {
+                        bestMove = i;
+                        break;
+                    }
+                }
+            }
+
+            // If no winning move, check for a blocking move for 'X'
+            if (bestMove === -1) {
+                for (let i = 0; i < board.length; i++) {
+                    if (board[i] === null) {
+                        const newBoard = [...board];
+                        newBoard[i] = 'X';
+                        if (checkWinner(newBoard) === 'X') {
+                            bestMove = i;
+                            break;
+                        }
+                    }
+                }
+            }
+
+            // If no blocking move, select a random available move
+            if (bestMove === -1) {
+                const availableMoves = board.reduce((acc, curr, index) => {
+                    if (!curr) {
+                        acc.push(index);
+                    }
+                    return acc;
+                }, []);
+
+                bestMove = availableMoves[Math.floor(Math.random() * availableMoves.length)];
+            }
+
+            setTimeout(() => {
+                handleClick(bestMove);
+            }, 800);
+        }
+
         if (!winner && player === 'O') {
             makeComputerMove();
         }
-    }, [player, winner, makeComputerMove]);
+    }, [player, winner]);
 
     const checkWinner = (currentBoard) => {
         const winningLines = [
@@ -61,51 +107,7 @@ const TicTacToe = () => {
         }
     };
 
-    function makeComputerMove (){
-        let bestMove = -1;
 
-        // Check for a winning move for 'O'
-        for (let i = 0; i < board.length; i++) {
-            if (board[i] === null) {
-                const newBoard = [...board];
-                newBoard[i] = 'O';
-                if (checkWinner(newBoard) === 'O') {
-                    bestMove = i;
-                    break;
-                }
-            }
-        }
-
-        // If no winning move, check for a blocking move for 'X'
-        if (bestMove === -1) {
-            for (let i = 0; i < board.length; i++) {
-                if (board[i] === null) {
-                    const newBoard = [...board];
-                    newBoard[i] = 'X';
-                    if (checkWinner(newBoard) === 'X') {
-                        bestMove = i;
-                        break;
-                    }
-                }
-            }
-        }
-
-        // If no blocking move, select a random available move
-        if (bestMove === -1) {
-            const availableMoves = board.reduce((acc, curr, index) => {
-                if (!curr) {
-                    acc.push(index);
-                }
-                return acc;
-            }, []);
-
-            bestMove = availableMoves[Math.floor(Math.random() * availableMoves.length)];
-        }
-
-        setTimeout(() => {
-            handleClick(bestMove);
-        }, 800);
-    };
 
     const resetGame = () => {
         setBoard(initialBoard);
