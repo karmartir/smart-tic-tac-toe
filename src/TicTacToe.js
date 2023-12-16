@@ -12,8 +12,7 @@ const TicTacToe = () => {
         if (!winner && player === 'O') {
             makeComputerMove();
         }
-        // eslint-disable-next-line
-    }, [player, winner]);
+    }, [player, winner, makeComputerMove]);
 
     const checkWinner = (currentBoard) => {
         const winningLines = [
@@ -62,7 +61,7 @@ const TicTacToe = () => {
         }
     };
 
-    const makeComputerMove = () => {
+    function makeComputerMove (){
         let bestMove = -1;
 
         // Check for a winning move for 'O'
