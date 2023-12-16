@@ -12,6 +12,7 @@ const TicTacToe = () => {
         if (!winner && player === 'O') {
             makeComputerMove();
         }
+        // eslint-disable-next-line
     }, [player, winner]);
 
     const checkWinner = (currentBoard) => {
